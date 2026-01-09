@@ -1,21 +1,23 @@
+ng on ${port}));
+
+Update package.json to include start and dependency Replace your repo’s package.json scripts/dependencies with this (keep the other metadata if you want):
 {
 "name": "shot-of-the-day-infra",
 "version": "1.0.0",
 "description": "Infra code for my Shot of the Day application",
 "homepage": "https://github.com/elixier01/shot-of-the-day-infra#readme",
-"bugs": {
-"url": "https://github.com/elixier01/shot-of-the-day-infra/issues"
-},
-"repository": {
-"type": "git",
-"url": "git+https://github.com/elixier01/shot-of-the-day-infra.git"
-},
+"bugs": { "url": "https://github.com/elixier01/shot-of-the-day-infra/issues" },
+"repository": { "type": "git", "url": "git+https://github.com/elixier01/shot-of-the-day-infra.git" },
 "license": "ISC",
 "author": "Andrew beattie",
 "type": "commonjs",
-"main": "index.js",
+"main": "server.js",
 "scripts": {
-"test": "echo \"No tests\" && exit 0",
-"build": "echo \"No build step required\" && exit 0"
+"start": "node server.js",
+"test": "echo "No tests" && exit 0"
+},
+"dependencies": {
+"express": "^4.18.2"
 }
 }
+
