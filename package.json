@@ -1,0 +1,20 @@
+{
+  "name": "shot-of-the-day-infra",
+  "version": "1.0.0",
+  "description": "Infra code for my Shot of the Day application",
+  "homepage": "https://github.com/elixier01/shot-of-the-day-infra#readme",
+  "bugs": {
+    "url": "https://github.com/elixier01/shot-of-the-day-infra/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elixier01/shot-of-the-day-infra.git"
+  },
+  "license": "ISC",
+  "author": "Andrew beattie",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
