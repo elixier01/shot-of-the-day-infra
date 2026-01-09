@@ -1,6 +1,3 @@
-ng on ${port}));
-
-Update package.json to include start and dependency Replace your repo’s package.json scripts/dependencies with this (keep the other metadata if you want):
 {
 "name": "shot-of-the-day-infra",
 "version": "1.0.0",
@@ -14,7 +11,7 @@ Update package.json to include start and dependency Replace your repo’s packag
 "main": "server.js",
 "scripts": {
 "start": "node server.js",
-"test": "echo "No tests" && exit 0"
+"test": "echo \"No tests\" && exit 0"
 },
 "dependencies": {
 "express": "^4.18.2"
