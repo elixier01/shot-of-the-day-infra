@@ -1,0 +1,165 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "workflows_shotOfTheDayCreateImg_name": {
+            "defaultValue": "shotOfTheDayCreateImg",
+            "type": "String"
+        },
+        "connections_azureblob_externalid": {
+            "defaultValue": "/subscriptions/f804583a-06f5-4945-a70e-1c3b18546c2d/resourceGroups/shotOfTheDayResourceGroup/providers/Microsoft.Web/connections/azureblob",
+            "type": "String"
+        },
+        "connections_documentdb_externalid": {
+            "defaultValue": "/subscriptions/f804583a-06f5-4945-a70e-1c3b18546c2d/resourceGroups/shotOfTheDayResourceGroup/providers/Microsoft.Web/connections/documentdb",
+            "type": "String"
+        },
+        "connections_azurequeues_externalid": {
+            "defaultValue": "/subscriptions/f804583a-06f5-4945-a70e-1c3b18546c2d/resourceGroups/shotOfTheDayResourceGroup/providers/Microsoft.Web/connections/azurequeues",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Logic/workflows",
+            "apiVersion": "2017-07-01",
+            "name": "[parameters('workflows_shotOfTheDayCreateImg_name')]",
+            "location": "italynorth",
+            "properties": {
+                "state": "Enabled",
+                "definition": {
+                    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "$connections": {
+                            "defaultValue": {},
+                            "type": "Object"
+                        }
+                    },
+                    "triggers": {
+                        "When_an_HTTP_request_is_received": {
+                            "type": "Request",
+                            "kind": "Http",
+                            "inputs": {
+                                "method": "POST",
+                                "relativePath": "/v1/images"
+                            },
+                            "description": "IUPS - Image Upload Service"
+                        }
+                    },
+                    "actions": {
+                        "Create_blob_(V2)": {
+                            "runAfter": {},
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['azureblob']['connectionId']"
+                                    }
+                                },
+                                "method": "post",
+                                "body": "@triggerFormDataValue('File')",
+                                "headers": {
+                                    "ReadFileMetadataFromServer": true
+                                },
+                                "path": "/v2/datasets/@{encodeURIComponent(encodeURIComponent('AccountNameFromSettings'))}/files",
+                                "queries": {
+                                    "folderPath": "/shotofthedaycontainer",
+                                    "name": "@ticks(utcNow())",
+                                    "queryParametersSingleEncoded": true
+                                }
+                            },
+                            "runtimeConfiguration": {
+                                "contentTransfer": {
+                                    "transferMode": "Chunked"
+                                }
+                            }
+                        },
+                        "Create_or_update_document_(V3)": {
+                            "runAfter": {
+                                "Create_blob_(V2)": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['documentdb']['connectionId']"
+                                    }
+                                },
+                                "method": "post",
+                                "body": {
+                                    "id": "@body('Create_blob_(V2)')?['Id']",
+                                    "filePath": "@body('Create_blob_(V2)')?['Path']",
+                                    "fileLocator": "@body('Create_blob_(V2)')?['FileLocator']",
+                                    "fileName": "@triggerFormDataValue('FileName')",
+                                    "userID": "@triggerFormDataValue('userId')",
+                                    "userName": "@triggerFormDataValue('userName')"
+                                },
+                                "path": "/v2/cosmosdb/@{encodeURIComponent('AccountNameFromSettings')}/dbs/@{encodeURIComponent('shot-of-the-day-db-container')}/colls/@{encodeURIComponent('ShotOfTheDayDb')}/docs"
+                            }
+                        },
+                        "Response": {
+                            "runAfter": {
+                                "Put_a_message_on_a_queue_(V2)": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "Response",
+                            "kind": "Http",
+                            "inputs": {
+                                "statusCode": 200,
+                                "body": "@body('Create_or_update_document_(V3)')"
+                            }
+                        },
+                        "Put_a_message_on_a_queue_(V2)": {
+                            "runAfter": {
+                                "Create_or_update_document_(V3)": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['azurequeues']['connectionId']"
+                                    }
+                                },
+                                "method": "post",
+                                "body": "{\n\"id\": \"@{triggerOutputs()?['relativePathParameters']?['id']}\",\n\"blobPath\": \"@{body('Create_blob_(V2)')?['Path']}\",\n\"fileLocator\": \"@{body('Create_blob_(V2)')?['FileLocator']}\",\n\"userId\": \"@{triggerFormDataValue('userId')}\"\n}",
+                                "path": "/v2/storageAccounts/@{encodeURIComponent(encodeURIComponent('AccountNameFromSettings'))}/queues/@{encodeURIComponent('image-processing-queue')}/messages"
+                            }
+                        }
+                    },
+                    "outputs": {}
+                },
+                "parameters": {
+                    "$connections": {
+                        "value": {
+                            "azureblob": {
+                                "id": "/subscriptions/f804583a-06f5-4945-a70e-1c3b18546c2d/providers/Microsoft.Web/locations/italynorth/managedApis/azureblob",
+                                "connectionId": "[parameters('connections_azureblob_externalid')]",
+                                "connectionName": "azureblob",
+                                "connectionProperties": {}
+                            },
+                            "documentdb": {
+                                "id": "/subscriptions/f804583a-06f5-4945-a70e-1c3b18546c2d/providers/Microsoft.Web/locations/italynorth/managedApis/documentdb",
+                                "connectionId": "[parameters('connections_documentdb_externalid')]",
+                                "connectionName": "documentdb",
+                                "connectionProperties": {}
+                            },
+                            "azurequeues": {
+                                "id": "/subscriptions/f804583a-06f5-4945-a70e-1c3b18546c2d/providers/Microsoft.Web/locations/italynorth/managedApis/azurequeues",
+                                "connectionId": "[parameters('connections_azurequeues_externalid')]",
+                                "connectionName": "azurequeues",
+                                "connectionProperties": {}
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}
