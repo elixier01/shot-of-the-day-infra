@@ -1,6 +1,16 @@
 version: 2
 updates:
 
-package-ecosystem: "npm" directory: "/" # scan repo root (change to "/demo-web" if your package.json is there) schedule: interval: "weekly" open-pull-requests-limit: 5 allow:
+package-ecosystem: "npm"
+directory: "/"
+schedule:
+interval: "weekly"
+open-pull-requests-limit: 5
+allow:
+
 dependency-type: "all"
-package-ecosystem: "github-actions" directory: "/" schedule: interval: "weekly" open-pull-requests-limit: 5
+package-ecosystem: "github-actions"
+directory: "/"
+schedule:
+interval: "weekly"
+open-pull-requests-limit: 5
