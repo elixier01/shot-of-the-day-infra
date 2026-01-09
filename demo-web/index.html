@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Shot of the Day Wireframe</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/wireframe.css/wireframe.min.css">
+<style>
+body {
+margin: 0;
+padding: 2em 0;
+font-family: sans-serif;
+background: #fafafa;
+}
+.wireframe-container {
+max-width: 500px;
+margin: 0 auto;
+position: relative;
+}
+.topbar {
+width: 100%;
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 1em;
+}
+.hamburger {
+width: 38px;
+height: 38px;
+border: 1px solid #000;
+border-radius: 6px;
+background: #fff;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+.hamburger-lines {
+width: 22px;
+height: 16px;
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+}
+.hamburger-line {
+height: 3px;
+background: #000;
+border-radius: 2px;
+margin: 1px 0;
+}
+.user-box {
+display: flex;
+align-items: center;
+border: 1px solid #000;
+padding: 0.4em 1em 0.4em 0.7em;
+background: #fff;
+border-radius: 2em;
+gap: 0.6em;
+font-size: 1em;
+margin-left: 0.5em;
+}
+.user-avatar {
+width: 28px;
+height: 28px;
+border: 1px solid #000;
+background: #ccc;
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 1em;
+color: #555;
+}
+.title {
+text-align: center;
+font-size: 2em;
+border: 1px solid #000;
+background: #fff;
+padding: 0.4em 0;
+margin-bottom: 1em;
+font-weight: bold;
+letter-spacing: 2px;
+}
+.bordered {
+border: 1px solid #000;
+padding: 1em;
+margin-bottom: 1em;
+box-sizing: border-box;
+background: #fff;
+}
+.image-placeholder {
+width: 400px;
+height: 300px;
+background: #eee;
+border: 1px solid #000;
+display: flex;
+align-items: center;
+justify-content: center;
+margin: 0 auto 1em auto;
+font-size: 1.2em;
+color: #333;
+}
+.uploader-info {
+display: flex;
+align-items: center;
+gap: 1em;
+margin-bottom: 1em;
+}
+.avatar-placeholder {
+width: 40px;
+height: 40px;
+border: 1px solid #000;
+border-radius: 50%;
+background: #ccc;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 1.1em;
+color: #555;
+}
+.button-row {
+display: flex;
+gap: 1em;
+margin-top: 1em;
+flex-wrap: wrap;
+}
+.button-row button, .share-btn {
+border: 1px solid #000;
+background: #fff;
+padding: 0.5em 1em;
+cursor: pointer;
+}
+input[type="file"] {
+border: 1px solid #000;
+background: #fff;
+padding: 0.3em;
+}
+.date-nav-row {
+display: flex;
+align-items: center;
+justify-content: center;
+margin-bottom: 1em;
+}
+.arrow-btn {
+border: 1px solid #000;
+background: #fff;
+padding: 0.4em 1em;
+font-size: 1.2em;
+cursor: pointer;
+margin: 0 0.5em;
+}
+.date-box {
+border: 1px solid #000;
+padding: 0.5em 1em;
+background: #f7f7f7;
+margin: 0 1em;
+font-size: 1em;
+}
+.share-btn {
+margin-left: 1em;
+font-size: 1em;
+}
+</style>
+</head>
+<body>
+<div class="wireframe-container">
+<!-- Topbar with hamburger and user info -->
+<div class="topbar">
+<div class="hamburger" title="Menu">
+<div class="hamburger-lines">
+<div class="hamburger-line"></div>
+<div class="hamburger-line"></div>
+<div class="hamburger-line"></div>
+</div>
+</div>
+<div class="user-box">
+<div class="user-avatar">JD</div>
+<span>JaneDoe</span>
+</div>
+</div>
+<!-- Title -->
+<div class="title">
+Shot of the Day
+</div>
+<!-- Image Placeholder -->
+<div class="bordered image-placeholder">
+Current SotD Image
+</div>
+<!-- Date & Navigation below image -->
+<div class="date-nav-row">
+<button class="arrow-btn">&larr;</button>
+<div class="date-box">June 6, 2024</div>
+<button class="arrow-btn">&rarr;</button>
+</div>
+<!-- Uploader Info and Share -->
+<div class="bordered uploader-info">
+<div class="avatar-placeholder">U</div>
+<div>
+<strong>User123</strong><br>
+<span>Uploaded at 09:32 AM</span>
+</div>
+<button class="share-btn">Share</button>
+</div>
+<!-- Upload New Image Section & Buttons -->
+<div class="bordered" style="width: 100%;">
+<label for="upload-image">Upload new image:</label><br>
+<input type="file" id="upload-image"><br>
+<div class="button-row">
+<button type="button">Submit</button>
+<button type="button">Edit</button>
+<button type="button">Delete</button>
+</div>
+</div>
+</div>
+</body>
+</html>
+
+
+ 
